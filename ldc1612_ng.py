@@ -53,6 +53,7 @@ PRODUCT_BTT_EDDY = 1
 PRODUCT_CARTOGRAPHER = 2
 PRODUCT_MELLOW_FLY = 3
 PRODUCT_LDC1612_INTERNAL_CLK = 4
+PRODUCT_LDC1612_USB = 5
 
 HOME_MODE_NONE = 0
 HOME_MODE_HOME = 1
@@ -88,6 +89,7 @@ class LDC1612_ng:
             "cartographer": PRODUCT_CARTOGRAPHER,
             "mellow_fly": PRODUCT_MELLOW_FLY,
             "ldc1612_internal_clk": PRODUCT_LDC1612_INTERNAL_CLK,
+            "ldc1612_usb": PRODUCT_LDC1612_USB,
         }
         self._device_product = config.getchoice("sensor_type", device_choices, PRODUCT_UNKNOWN)
 
@@ -109,6 +111,12 @@ class LDC1612_ng:
             # A generic setup that usees internal LDC1612 clock
             # using LDC1612 internal typical clock frequency 43.4MHz
             self._ldc_freq_clk = 43_400_000
+            self._ldc_fin_divider = 1
+            self._ldc_fref_divider = 1
+            self._ldc_settle_time = 0.00125
+            self._default_drive_current = 15
+        elif self._device_product == PRODUCT_LDC1612_USB:
+            self._ldc_freq_clk = 24_000_000
             self._ldc_fin_divider = 1
             self._ldc_fref_divider = 1
             self._ldc_settle_time = 0.00125

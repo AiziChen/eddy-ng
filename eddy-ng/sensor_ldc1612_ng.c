@@ -66,6 +66,7 @@ enum {
 #define PRODUCT_CARTOGRAPHER 2
 #define PRODUCT_MELLOW_FLY 3
 #define PRODUCT_LDC1612_INTERNAL_CLK 4
+#define PRODUCT_LDC1612_USB 5
 
 // Chip registers
 #define REG_DATA0_MSB 0x00
@@ -338,7 +339,7 @@ config_ldc1612_ng(uint32_t oid, uint32_t i2c_oid, uint8_t product, int32_t intb_
         // can't actually get to 24MHz from 48MHz. This could be
         // configured from the python side but that requires
         // adding a bunch of new commands.
-        gpio_pwm_setup_with_max(GPIO('B', 4), 1, 1, 2);
+        //gpio_pwm_setup_with_max(GPIO('B', 4), 1, 1, 2);
 
         // There's a LED -- do something with it in the future,
         // showing homing progress
@@ -349,6 +350,9 @@ config_ldc1612_ng(uint32_t oid, uint32_t i2c_oid, uint8_t product, int32_t intb_
         // pull that out on the python side.
         break;
 #endif
+    case PRODUCT_LDC1612_USB:
+        ld->sensor_cvt = 24000000.0f / (float)(1<<28);
+        break;
     case PRODUCT_LDC1612_INTERNAL_CLK:
         ld->sensor_cvt = 43400000.0f / (float)(1<<28);
         break;
